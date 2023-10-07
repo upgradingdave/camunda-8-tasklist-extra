@@ -25,7 +25,6 @@ public class MyWorker {
 
     boolean result = myService.myOperation(variables.getBusinessKey());
 
-    return new ProcessVariables()
-        .setResult(result); // new object to avoid sending unchanged variables
+    return new ProcessVariables(); // new object to avoid sending unchanged variables
   }
 }

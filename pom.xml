@@ -52,6 +52,12 @@
       <version>2.1.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.camunda.community</groupId>
+      <artifactId>camunda-8-tasklist-rest-java-client</artifactId>
+      <version>${camunda.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
