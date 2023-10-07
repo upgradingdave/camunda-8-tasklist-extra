@@ -14,3 +14,5 @@ tasklist:
     contentType: "application/json"
     taskListBaseUrl: "https://REGION.tasklist.camunda.io/CLOUD_CLUSTER_ID"
     audience: "tasklist.camunda.io"
+server:
+  port: 8087

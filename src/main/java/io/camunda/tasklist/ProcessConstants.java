@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution;
+package io.camunda.tasklist;
 
 public class ProcessConstants {
 

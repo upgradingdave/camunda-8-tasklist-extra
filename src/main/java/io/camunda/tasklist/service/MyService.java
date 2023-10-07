@@ -1,4 +1,4 @@
-package org.example.camunda.process.solution.service;
+package io.camunda.tasklist.service;
 
 import org.springframework.stereotype.Service;
 

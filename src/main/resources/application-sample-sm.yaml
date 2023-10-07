@@ -17,3 +17,5 @@ tasklist:
     contentType: "application/x-www-form-urlencoded"
     taskListBaseUrl: "https://TASKLIST_HOST/tasklist"
     audience: "tasklist.camunda.io"
+server:
+  port: 8087

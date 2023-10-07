@@ -6,9 +6,21 @@
 
 # Camunda 8 Task List Extra
 
-This project contains a rest api that includes all the Task List Rest API calls, plus some additional, extra functionality commonly needed for custom Task List implementations
+This project contains a rest api that includes all the Task List Rest API calls, plus extra functionality commonly needed for custom Task List implementations
 
-# Next Steps:
+# Getting Started
 
-- Add swagger ui
-- Add task started listener
+Build and compile using:
+
+```shell
+./mvnw clean install
+```
+
+Start the Spring Boot Application using:
+
+```shell
+./mvnw spring-boot:run
+```
+
+Then browse to [http://localhost:8087/swagger-ui/index.html](http://localhost:8087/swagger-ui/index.html) to see api rest endpoints available
+
