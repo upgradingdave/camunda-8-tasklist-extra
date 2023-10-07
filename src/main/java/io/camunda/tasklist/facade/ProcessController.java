@@ -1,6 +1,5 @@
 package io.camunda.tasklist.facade;
 
-import io.camunda.tasklist.ProcessConstants;
 import io.camunda.tasklist.ProcessVariables;
 import io.camunda.zeebe.client.ZeebeClient;
 import org.slf4j.Logger;
@@ -23,15 +22,15 @@ public class ProcessController {
     this.zeebe = client;
   }
 
-  @PostMapping("/start")
-  public void startProcessInstance(@RequestBody ProcessVariables variables) {
+  @PostMapping("/start/{processId}")
+  public void startProcessInstance(
+      @PathVariable String processId, @RequestBody ProcessVariables variables) {
 
-    LOG.info(
-        "Starting process `" + ProcessConstants.BPMN_PROCESS_ID + "` with variables: " + variables);
+    LOG.info("Starting process `" + processId + "` with variables: " + variables);
 
     zeebe
         .newCreateInstanceCommand()
-        .bpmnProcessId(ProcessConstants.BPMN_PROCESS_ID)
+        .bpmnProcessId(processId)
         .latestVersion()
         .variables(variables)
         .send();

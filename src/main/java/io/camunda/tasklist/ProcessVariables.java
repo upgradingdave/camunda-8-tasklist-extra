@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ProcessVariables {
 
   private String businessKey;
-  private Boolean result;
+  private String assignee;
 
   public String getBusinessKey() {
     return businessKey;
@@ -21,13 +21,12 @@ public class ProcessVariables {
     return this;
   }
 
-  public Boolean getResult() {
-    return result;
+  public String getAssignee() {
+    return assignee;
   }
 
-  public ProcessVariables setResult(Boolean result) {
-    this.result = result;
-    return this;
+  public void setAssignee(String assignee) {
+    this.assignee = assignee;
   }
 
   @Override

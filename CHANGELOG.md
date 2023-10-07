@@ -3,9 +3,11 @@
 
 # 8.2.15-SNAPSHOT (October 2023)
 
-- [ ] Implement `/process/start` endpoint
-- [ ] Implement `/process/message/{messageName}/{correlationKey}`
-- [ ] Implement `/task/complete` endpoint
+- [x] Implement `POST /process/start/{{processId}}`
+- [x] Implement `POST /process/message/{messageName}/{correlationKey}`
+- [x] Implement `POST /tasks/search` endpoint
+- [x] Implement `POST /tasks/{taskId}` endpoint
+- [x] Implement `POST /task/{taskId}/complete` endpoint
 - [x] Add swagger ui
 - [ ] Able to register create task listener
 - [ ] Able to register complete task listener
