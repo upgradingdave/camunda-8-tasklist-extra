@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin
 public class TaskController {
 
   private static final Logger LOG = LoggerFactory.getLogger(TaskController.class);

@@ -3,12 +3,14 @@ import { Form } from '@bpmn-io/form-js-viewer';
 import { Button } from '@carbon/react';
 const schema = require('../../forms/welcome.form.json')
 
-
 class WelcomeForm extends Component {
 
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      bpmnForm: null
+    }
   }
 
   onSubmit(e, results) {
@@ -22,6 +24,7 @@ class WelcomeForm extends Component {
       const bpmnForm = new Form({container: container});
       bpmnForm.on('submit', this.onSubmit);
       bpmnForm.importSchema(schema, this.props.data);
+      this.setState({bpmnForm: bpmnForm});
     }
   }
 
@@ -29,7 +32,7 @@ class WelcomeForm extends Component {
     return (
       <div>
         <div id={"form"}></div>
-        <Button>Submit</Button>
+        <Button onClick={() => (this.state.bpmnForm.submit())} >Submit</Button>
       </div>
     );
   }
