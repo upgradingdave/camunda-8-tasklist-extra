@@ -1,0 +1,52 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "Orange",
+          "value": "orange"
+        },
+        {
+          "label": "Blue",
+          "value": "blue"
+        },
+        {
+          "label": "Red",
+          "value": "red"
+        },
+        {
+          "label": "Green",
+          "value": "green"
+        },
+        {
+          "label": "Purple",
+          "value": "purple"
+        },
+        {
+          "label": "Yellow",
+          "value": "yellow"
+        }
+      ],
+      "label": "What's your favorite Color?",
+      "type": "select",
+      "layout": {
+        "row": "Row_1omke3m",
+        "columns": null
+      },
+      "id": "Field_07v3dgr",
+      "key": "color",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_0imseob",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.0"
+  },
+  "schemaVersion": 10
+}

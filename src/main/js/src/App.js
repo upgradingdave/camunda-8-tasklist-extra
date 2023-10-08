@@ -7,7 +7,7 @@ let mime = require('rest/interceptor/mime');
 let client = rest.wrap(mime);
 
 const restApi = "http://localhost:8087";
-const processId = "tasklistRestAPIUnitTestProcess";
+const processId = "Process_twoUserTasks";
 
 const welcomeFormData = {
   "firstName": "Dave",
@@ -27,7 +27,7 @@ const initial = {
   schema: null,
   data: welcomeFormData,
   task: null,
-  user: { userId: null },
+  user: { userName: null },
   tasks: [],
   screen: 'welcome',
   history: {}

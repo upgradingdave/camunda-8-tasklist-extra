@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "label": "What's your age?",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1aobhsk",
+        "columns": null
+      },
+      "id": "Field_11w2yxe",
+      "key": "age"
+    }
+  ],
+  "type": "default",
+  "id": "Form_048v4ub",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.0"
+  },
+  "schemaVersion": 10
+}

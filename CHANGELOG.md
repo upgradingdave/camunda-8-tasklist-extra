@@ -1,6 +1,8 @@
 # Later
 
 - [ ] Support Start forms (8.3)
+- [ ] implement exponential backoff polling
+- [ ] implement authorizations
 - [ ] Currently, Cross Origin request are allowed.
 - [ ] Able to register listeners for `assignment`, `delete`, `update`, and `timeout`
 - [ ] Integrate forms.js react styles (rather than simply adding styles to `index.html`)
