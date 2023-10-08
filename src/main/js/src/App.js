@@ -1,14 +1,11 @@
 import logo from './logo.svg';
 import './app.scss'
 import { Button } from '@carbon/react';
+import WelcomeForm from "./components/WelcomeForm";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button>Hello React!</Button>
-      </header>
-    </div>
+    <WelcomeForm/>
   );
 }
 
