@@ -6,7 +6,8 @@
 
 # Camunda 8 Task List Extra
 
-This project contains a rest api that includes all the Task List Rest API calls, plus extra functionality commonly needed for custom Task List implementations
+This project contains a rest api that includes all the Task List Rest API calls, plus extra functionality commonly
+needed for custom Task List implementations
 
 # Getting Started
 
@@ -22,5 +23,13 @@ Start the Spring Boot Application using:
 ./mvnw spring-boot:run
 ```
 
-Then browse to [http://localhost:8087/swagger-ui/index.html](http://localhost:8087/swagger-ui/index.html) to see api rest endpoints available
+Then browse to [http://localhost:8087/swagger-ui/index.html](http://localhost:8087/swagger-ui/index.html) to see available
+rest api endpoints
+
+# Sample ReactJs Front End
+
+This project includes a sample front end written in ReactJs with NodeJS v18.5.0 (npm v8.12.1) and uses [Carbon](https://github.com/carbon-design-system/carbon) for css styling.
+
+See [src/main/js/README.md](src/main/js/README.md) for more details on how to build and run the ReactJs App.
+
 
