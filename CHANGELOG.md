@@ -11,8 +11,10 @@
 
 - [ ] Able to register complete task listener
 - [ ] Implement find task by variable
-- [ ] Able to complete task and load next form
 - [ ] Able to register create task listener
+- [ ] Able to complete task and load next form
+- [x] Able to get form given a task id
+- [x] Get process instance key (required for get form)
 - [x] Create sample bpmn process
 - [x] Able to start process instance from start form
 - [x] Able to display forms.js form

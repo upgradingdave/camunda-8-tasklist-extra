@@ -55,7 +55,13 @@
     <dependency>
       <groupId>org.camunda.community</groupId>
       <artifactId>camunda-8-tasklist-rest-java-client</artifactId>
-      <version>${camunda.version}</version>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.community</groupId>
+      <artifactId>camunda-8-operate-rest-java-client</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
   </dependencies>

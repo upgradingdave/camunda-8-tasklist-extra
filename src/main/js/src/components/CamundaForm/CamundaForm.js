@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Form } from '@bpmn-io/form-js-viewer';
 import { Button } from '@carbon/react';
-const schema = require('../../forms/welcome.form.json')
 
-class WelcomeForm extends Component {
+class CamundaForm extends Component {
 
   constructor(props) {
     super(props);
@@ -23,7 +22,7 @@ class WelcomeForm extends Component {
     if(!container.firstChild) {
       const bpmnForm = new Form({container: container});
       bpmnForm.on('submit', this.onSubmit);
-      bpmnForm.importSchema(schema, this.props.data);
+      bpmnForm.importSchema(this.props.schema, this.props.data);
       this.setState({bpmnForm: bpmnForm});
     }
   }
@@ -38,4 +37,4 @@ class WelcomeForm extends Component {
   }
 }
 
-export default WelcomeForm;
+export default CamundaForm;

@@ -32,4 +32,8 @@ This project includes a sample front end written in ReactJs with NodeJS v18.5.0 
 
 See [src/main/js/README.md](src/main/js/README.md) for more details on how to build and run the ReactJs App.
 
+The first time the ReactJs starts, unless a user is signed in, [welcome.form.json](src/main/js/src/forms/welcome.form.json) will be displayed.
+
+To simulate a user has already signed in, pass the query param `?userName=<userName>`.
+
 
