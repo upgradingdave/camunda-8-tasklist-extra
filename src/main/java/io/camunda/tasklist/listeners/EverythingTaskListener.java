@@ -4,10 +4,9 @@ import io.camunda.tasklist.TaskListener;
 import io.camunda.tasklist.annotations.TaskListenerEnabled;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 @TaskListenerEnabled(activityId = "")
 public class EverythingTaskListener extends TaskListener {

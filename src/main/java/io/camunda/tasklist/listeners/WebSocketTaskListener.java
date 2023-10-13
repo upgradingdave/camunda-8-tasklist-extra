@@ -2,7 +2,7 @@ package io.camunda.tasklist.listeners;
 
 public class WebSocketTaskListener {
 
-    /*
+  /*
   Task task = new Task();
 
       task.setVariables(variables);
