@@ -10,4 +10,9 @@ public class TaskListenersConfig {
   public FavoriteColorTaskListener favoriteColorTaskListener() {
     return new FavoriteColorTaskListener();
   }
+
+  @Bean
+  public EverythingTaskListener everythingTaskListener() {
+    return new EverythingTaskListener();
+  }
 }

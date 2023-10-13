@@ -1,5 +1,8 @@
 package io.camunda.tasklist.facade;
 
+import io.camunda.tasklist.TaskListener;
+import io.camunda.tasklist.annotations.TaskListenerProcessor;
+import io.camunda.tasklist.annotations.TaskListenerRegistry;
 import io.camunda.tasklist.rest.TaskListRestApi;
 import io.camunda.tasklist.rest.dto.TaskResponse;
 import io.camunda.tasklist.rest.dto.TaskSearchRequest;
@@ -22,8 +25,11 @@ public class TaskController {
 
   TaskListRestApi taskListRestApi;
 
-  public TaskController(@Autowired TaskListRestApi client) {
+  TaskListenerProcessor taskListenerProcessor;
+
+  public TaskController(@Autowired TaskListRestApi client, @Autowired TaskListenerProcessor taskListenerProcessor) {
     this.taskListRestApi = client;
+    this.taskListenerProcessor = taskListenerProcessor;
   }
 
   @PostMapping("/search")
@@ -42,6 +48,7 @@ public class TaskController {
   public TaskResponse startProcessInstance(
       @PathVariable String taskId, @RequestBody Map<String, Object> request)
       throws TaskListException, TaskListRestException {
+
     return taskListRestApi.completeTask(taskId, request);
   }
 }
