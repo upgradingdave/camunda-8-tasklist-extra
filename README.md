@@ -51,6 +51,37 @@ public class FavoriteColorTaskListener extends TaskListener {
 
 The listener will run for all User Tasks if you set `ativityId` to `"all"`, or to an empty String `""`.
 
+## WebSocket Task Listener
+
+When an instance moves from one User Task to the next, it may take a few seconds for TaskList (and TaskList rest
+api calls) to "catch up" with Zeebe. This is inconvenient because the end user experience may feel "slow" even though
+the Zeebe Engine has already created the new task.
+
+In other words, here's one approach:
+
+1. Poll for assigned tasks
+2. Display task
+3. User completes task
+4. Go to step 1
+
+Unfortunately, step 1 has to wait for TaskList to do some elasticsearch indexing.
+
+A workaround is to get the task directly from Zeebe instead of waiting for TaskList. Here's a different approach:
+
+1. Poll for assigned tasks
+2. Display task
+3. User completes task
+4a. User Task Job Worker immediately recognizes new assigned tasks
+4b. Go to step 1
+
+The [WebSocketTaskListener](src/main/java/io/camunda/tasklist/listeners/WebSocketTaskListener.java) shows how we can take
+advantage of this new approach. As soon as a User Task Job Worker sees the new task, the [WebSocketTaskListener](src/main/java/io/camunda/tasklist/listeners/WebSocketTaskListener.java) will get triggered. Inside the listner, the new task is sent directly to the javascript app running in the browser via web socket.
+
+The javascript app can then immediately display the form for the next assigned task.
+
+At the same time, the javascript app can also continue to poll the TaskList api as before, and eventually, a second
+later, usually before the user can even complete the form, the task is also available via TaskList rest api.
+
 # Sample ReactJs Front End
 
 This project includes a sample front end written in ReactJs with NodeJS v18.5.0 (npm v8.12.1) and uses [Carbon](https://github.com/carbon-design-system/carbon) for css styling.
