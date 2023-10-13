@@ -15,4 +15,9 @@ public class TaskListenersConfig {
   public EverythingTaskListener everythingTaskListener() {
     return new EverythingTaskListener();
   }
+
+  @Bean
+  public WebSocketTaskListener webSocketTaskListener() {
+    return new WebSocketTaskListener();
+  }
 }

@@ -1,60 +1,79 @@
 package io.camunda.tasklist.listeners;
 
-public class WebSocketTaskListener {
+import static io.camunda.tasklist.rest.dto.Constants.TASK_STATE_CREATED;
 
-  /*
-  Task task = new Task();
+import com.fasterxml.jackson.core.type.TypeReference;
+import io.camunda.tasklist.TaskListener;
+import io.camunda.tasklist.annotations.TaskListenerEnabled;
+import io.camunda.tasklist.rest.dto.TaskResponse;
+import io.camunda.tasklist.service.JsonUtils;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-      task.setVariables(variables);
+@TaskListenerEnabled(activityId = "all")
+public class WebSocketTaskListener extends TaskListener {
 
-      String processDefinitionKey = Long.toString(job.getProcessDefinitionKey());
-      task.setProcessDefinitionId(processDefinitionKey);
+  Logger LOGGER =
+      LoggerFactory.getLogger(io.camunda.tasklist.listeners.WebSocketTaskListener.class);
 
-      String formKey = headers.get("io.camunda.zeebe:formKey");
-      task.setFormKey(formKey);
+  @Autowired private SimpMessagingTemplate simpMessagingTemplate;
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
-      String creationTime = sdf.format(new Date());
-      task.setCreationTime(creationTime);
+  @Override
+  public void onTaskCreate(
+      final JobClient client,
+      final ActivatedJob job,
+      Map<String, Object> variables,
+      Map<String, String> headers) {
 
-      // since 8.1.5, it seems that taskId and jobKey have become the same...
-      String jobKey = Long.toString(job.getKey());
+    LOGGER.info("onTaskCreate");
 
-      // obsolete : But good news, job.getElementInstanceKey() is the "taskId" that is expected by
-      // task list graphql
-      // String taskId = Long.toString(job.getElementInstanceKey());
-      task.setId(jobKey);
-      task.setJobKey(jobKey);
+    // Create a TaskResponse based on information passed to Job Worker
+    TaskResponse taskResponse = new TaskResponse();
 
-      String bpmnProcessId = job.getBpmnProcessId();
+    taskResponse.setTaskState(TASK_STATE_CREATED);
+    taskResponse.setProcessDefinitionKey(Long.toString(job.getProcessDefinitionKey()));
+    taskResponse.setFormKey(headers.get("io.camunda.zeebe:formKey"));
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+    String creationTime = sdf.format(new Date());
+    taskResponse.setCreationDate(creationTime);
+    taskResponse.setId(Long.toString(job.getKey()));
 
-      task.setProcessName(bpmnService.getProcessName(bpmnProcessId, processDefinitionKey));
+    // taskResponse.setProcessName(job.getBpmnProcessId());
+    // task.setProcessName(bpmnService.getProcessName(bpmnProcessId, processDefinitionKey));
+    // task.setVariables(variables);
+    // String taskActivityId = job.getElementId();
+    // !!! The name of the bpmn file in the "src/main/resources/models" directory must match the
+    // process id in order for this to work!
+    // String taskName = bpmnService.getTaskName(bpmnProcessId, processDefinitionKey,
+    // taskActivityId);
+    // task.setName(taskName);
 
-      String taskActivityId = job.getElementId();
-      // !!! The name of the bpmn file in the "src/main/resources/models" directory must match the
-      // process id in order for this to work!
-      String taskName =
-          bpmnService.getTaskName(bpmnProcessId, processDefinitionKey, taskActivityId);
-      task.setName(taskName);
-
-      if (!job.getCustomHeaders().isEmpty()) {
-        if (job.getCustomHeaders().containsKey("io.camunda.zeebe:assignee")) {
-          task.setAssignee(job.getCustomHeaders().get("io.camunda.zeebe:assignee"));
-        }
-        if (job.getCustomHeaders().containsKey("io.camunda.zeebe:candidateGroups")) {
-          String groups = job.getCustomHeaders().get("io.camunda.zeebe:candidateGroups");
-          task.setCandidateGroups(
-              JsonUtils.toParametrizedObject(groups, new TypeReference<List<String>>() {}));
-        }
+    if (!job.getCustomHeaders().isEmpty()) {
+      if (job.getCustomHeaders().containsKey("io.camunda.zeebe:assignee")) {
+        taskResponse.setAssignee(job.getCustomHeaders().get("io.camunda.zeebe:assignee"));
       }
-
-      TaskState taskState = TaskState.CREATED;
-      task.setTaskState(taskState);
-      if (task.getAssignee() != null) {
-        simpMessagingTemplate.convertAndSend("/topic/" + task.getAssignee() + "/userTask", task);
-      } else {
-        simpMessagingTemplate.convertAndSend("/topic/userTask", task);
+      if (job.getCustomHeaders().containsKey("io.camunda.zeebe:candidateGroups")) {
+        String groups = job.getCustomHeaders().get("io.camunda.zeebe:candidateGroups");
+        taskResponse.setCandidateGroups(
+            JsonUtils.toParametrizedObject(groups, new TypeReference<List<String>>() {}));
       }
-   */
+    }
 
+    simpMessagingTemplate.convertAndSend("/topic/tasks", taskResponse);
+
+    /*if (taskResponse.getAssignee() != null) {
+      simpMessagingTemplate.convertAndSend(
+          "/topic/" + taskResponse.getAssignee() + "/userTask", taskResponse);
+    } else {
+      simpMessagingTemplate.convertAndSend("/topic/userTask", taskResponse);
+    }*/
+  }
 }

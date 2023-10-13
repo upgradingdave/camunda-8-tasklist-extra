@@ -17,7 +17,7 @@ class CamundaForm extends Component {
   }
 
   componentDidMount() {
-    console.log("mounting form");
+    //console.log("mounting form");
     const container = document.querySelector('#form');
     if(!container.firstChild) {
       const bpmnForm = new Form({container: container});

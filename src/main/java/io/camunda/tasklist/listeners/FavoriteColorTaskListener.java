@@ -2,6 +2,7 @@ package io.camunda.tasklist.listeners;
 
 import io.camunda.tasklist.TaskListener;
 import io.camunda.tasklist.annotations.TaskListenerEnabled;
+import io.camunda.tasklist.rest.dto.TaskResponse;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import java.util.Map;
@@ -19,6 +20,10 @@ public class FavoriteColorTaskListener extends TaskListener {
       final ActivatedJob job,
       Map<String, Object> variables,
       Map<String, String> headers) {
-    LOGGER.info(FavoriteColorTaskListener.class + ": onTaskCreate");
+    LOGGER.info("onTaskCreate");
+  }
+
+  public void onTaskComplete(TaskResponse taskResponse) {
+    LOGGER.info("onTaskComplete");
   }
 }

@@ -8,10 +8,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@TaskListenerEnabled(activityId = "")
+@TaskListenerEnabled(activityId = "all")
 public class EverythingTaskListener extends TaskListener {
 
-  Logger LOGGER = LoggerFactory.getLogger(FavoriteColorTaskListener.class);
+  Logger LOGGER = LoggerFactory.getLogger(EverythingTaskListener.class);
 
   @Override
   public void onTaskCreate(
@@ -19,6 +19,6 @@ public class EverythingTaskListener extends TaskListener {
       final ActivatedJob job,
       Map<String, Object> variables,
       Map<String, String> headers) {
-    LOGGER.info(EverythingTaskListener.class + ": onTaskCreate");
+    LOGGER.info("onTaskCreate");
   }
 }

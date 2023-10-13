@@ -1,32 +1,40 @@
 import React, { Component } from 'react';
 import './app.scss'
 import CamundaForm from "./components/CamundaForm";
+import {Stomp} from '@stomp/stompjs';
 
 const welcomeFormSchema = require('./forms/welcome.form.json')
 
+// Websockets client
+const sockUrl = 'ws://localhost:8087/ws';
+let stompClient = null;
+
+// Http Rest client
+const restApi = "http://localhost:8087";
 let rest = require('rest');
 let mime = require('rest/interceptor/mime');
 let client = rest.wrap(mime);
 
-const restApi = "http://localhost:8087";
 const processId = "Process_twoUserTasks";
+const processFileName = "TwoUserTasks";
 const pollingIntervalMillis = 500;
+
+let merge = (a, b) => ({...a,...b});
 
 const welcomeFormData = {
   "firstName": "Dave",
-  "lastName": "Paroulek",
+  "lastName": "Smith",
   "officeAddress": "5721 Woods Haven Drive",
   "city": "Fredericksburg",
   "state": "VA",
   "zip": "22407",
   "phone": "",
   "userName": "dave",
-  "emailAddress": "david.paroulek@camunda.com",
+  "emailAddress": "david.paroulek@mycompany.com",
   "password": "camunda"
 }
 
 const initial = {
-  bpmnForm: null,
   schema: null,
   data: welcomeFormData,
   task: null,
@@ -54,39 +62,19 @@ class App extends Component {
     this.completeTask = this.completeTask.bind(this);
     this.getAssignedTasks = this.getAssignedTasks.bind(this);
     this.getForm = this.getForm.bind(this);
+    this.getFormByBpmnFileName = this.getFormByBpmnFileName.bind(this);
     this.getProcessDefinition = this.getProcessDefinition.bind(this);
     this.onStartFormSubmit = this.onStartFormSubmit.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.init = this.init.bind(this);
+
+    // Web Socket Functions
+    this.wsOnTaskReady = this.wsOnTaskReady.bind(this);
+    this.wsConnect = this.wsConnect.bind(this);
 
   }
 
-  onStartFormSubmit({data, errors}) {
-    if(Object.keys(errors).length === 0) {
-      console.log("form submitted ...");
-      console.log(data);
-      this.setState({data: data});
-      this.createInstance(data).then(() => {
-        this.setState({userName: data.userName, screen: "searching"});
-      });
-    } else {
-      console.log("form submitted but has errors ...");
-      console.log(errors);
-    }
-  }
-
-  onFormSubmit({data, errors}) {
-    if(Object.keys(errors).length === 0) {
-      console.log("form submitted ...");
-      console.log(data);
-      this.setState({data: data});
-      this.completeTask(this.state.task.id, {}).then(() => {
-        this.setState({screen: "searching"});
-      });
-    } else {
-      console.log("form submitted but has errors ...");
-      console.log(errors);
-    }
-  }
+  /*  Camunda REST API Calls */
 
   createInstance(payload) {
     return client({
@@ -119,6 +107,17 @@ class App extends Component {
       });
   }
 
+  getFormByBpmnFileName(formId, bpmnFileName) {
+    return client({path: `${restApi}/forms/${bpmnFileName}/${formId}`})
+      .then((response) => {
+        console.log(response.entity.schema);
+        this.setState({
+          schema: JSON.parse(response.entity.schema),
+          screen: "displayForm"
+        });
+      });
+  }
+
   getProcessDefinition(bpmnProcessId) {
     return client({
       path: `${restApi}/process/process-definitions/search`,
@@ -142,6 +141,70 @@ class App extends Component {
       headers: {'Content-Type': 'application/json'},
       entity: variables
     })
+  }
+
+  /* END Camunda REST API Calls */
+
+  wsOnTaskReady(message) {
+    console.log("TASK_EVENT");
+    let taskResponse = JSON.parse(message.body);
+    console.log(taskResponse);
+    let formKey = taskResponse.formKey.split(":").pop();
+    console.log(formKey);
+    this.setState({
+      task: taskResponse,
+      formKey: formKey,
+      screen: "loadForm"});
+    this.getFormByBpmnFileName(formKey, processFileName);
+  }
+
+  wsConnect() {
+    stompClient = Stomp.client(sockUrl);
+    // It's necessary to bind `this` correctly when calling a callback inside a callback
+    let wsOnTaskReady = this.wsOnTaskReady.bind(this);
+    stompClient.onConnect = function(frame){
+      stompClient.subscribe('/topic/tasks', wsOnTaskReady);
+    };
+
+    stompClient.onStompError =function(frame) {
+      console.log('STOMP error');
+    };
+
+    stompClient.activate();
+  }
+
+  wsSend(endpoint, json) {
+    stompClient.send(endpoint, {}, JSON.stringify(json));
+  }
+
+  onStartFormSubmit({data, errors}) {
+    if(Object.keys(errors).length === 0) {
+      //console.log("form submitted ...");
+      //console.log(data);
+      this.setState({data: data});
+      this.createInstance(data).then(() => {
+        this.setState({userName: data.userName, screen: "searching"});
+      });
+    } else {
+      console.log("form submitted but has errors ...");
+      console.log(errors);
+    }
+  }
+
+  onFormSubmit({data, errors}) {
+    if(Object.keys(errors).length === 0) {
+      console.log("form submitted ...");
+      console.log(data);
+      this.setState({data: data, screen: "submitForm"});
+      this.completeTask(this.state.task.id, {}).then(() => {
+        if(this.state.screen !== "displayForm") {
+          this.setState({screen: "searching"});
+        }
+      });
+    } else {
+      console.log("form submitted but has errors ...");
+      console.log(errors);
+    }
   }
 
   poll() {
@@ -173,7 +236,7 @@ class App extends Component {
     this.timerId = setInterval(() => this.poll(), pollingIntervalMillis);
   }
 
-  componentDidMount() {
+  init() {
     if(this.state.initialized === false) {
       // Find Process Definition Key
       this.getProcessDefinition(processId)
@@ -185,8 +248,14 @@ class App extends Component {
       // Start polling
       this.startPolling();
 
+      this.wsConnect();
+
       this.setState({initialized: true});
     }
+  }
+
+  componentDidMount() {
+    this.init();
   }
 
   render() {
@@ -198,7 +267,7 @@ class App extends Component {
           onSubmit={this.onStartFormSubmit}
         />
       );
-    } else if(this.state.screen === 'displayForm') {
+    } else if(this.state.screen === 'displayForm' || this.state.screen === 'submitForm') {
       //return (<div>Current State: {this.state.schema}</div>)
       return (
         <CamundaForm

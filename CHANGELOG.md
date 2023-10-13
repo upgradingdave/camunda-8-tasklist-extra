@@ -4,6 +4,8 @@
 # 8.2.15-SNAPSHOT (October 2023)
 - [ ] Implement find task by variable
 - [ ] Able to register complete task listener
+- [ ] Update reactjs app to submit form via grpc (and not tasklist). The websocket is too fast!
+- [x] Sample Websocket listener
 - [x] Able to complete task and load next form
 - [x] Able to register create task listener
 - [x] Able to get form given a task id
