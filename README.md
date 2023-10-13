@@ -71,11 +71,13 @@ A workaround is to get the task directly from Zeebe instead of waiting for TaskL
 1. Poll for assigned tasks
 2. Display task
 3. User completes task
-4a. User Task Job Worker immediately recognizes new assigned tasks
-4b. Go to step 1
+4. User Task Job Worker immediately recognizes new assigned tasks
+5. Go to step 1
+
+*Note that steps 4 and 5 can happen asynchronously
 
 The [WebSocketTaskListener](src/main/java/io/camunda/tasklist/listeners/WebSocketTaskListener.java) shows how we can take
-advantage of this new approach. As soon as a User Task Job Worker sees the new task, the [WebSocketTaskListener](src/main/java/io/camunda/tasklist/listeners/WebSocketTaskListener.java) will get triggered. Inside the listner, the new task is sent directly to the javascript app running in the browser via web socket.
+advantage of this new approach. As soon as a User Task Job Worker sees the new task, the [WebSocketTaskListener](src/main/java/io/camunda/tasklist/listeners/WebSocketTaskListener.java) will get triggered. Inside the listener, the new task is sent directly to the javascript app running in the browser via web socket.
 
 The javascript app can then immediately display the form for the next assigned task.
 
