@@ -1,33 +1,19 @@
 package io.camunda.tasklist;
 
-import io.camunda.tasklist.annotations.TaskListenerEnabled;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import io.camunda.tasklist.annotations.TaskListenerProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.type.AnnotatedTypeMetadata;
-
-
-import java.lang.reflect.AnnotatedType;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 @SpringBootTest
 public class ListenersTest {
 
-
   @Test
-  public void loadContext() {
-
-  }
+  public void loadContext() {}
 
   /*
 
@@ -48,8 +34,7 @@ public class ListenersTest {
     }
   } */
 
-  @Autowired
-  TaskListenerProcessor taskListenerProcessor;
+  @Autowired TaskListenerProcessor taskListenerProcessor;
 
   @Test
   public void testFindAnnotatedListeners() {
@@ -62,5 +47,4 @@ public class ListenersTest {
       SpringApplication.run(ListenersTestApp.class, args);
     }
   }
-
 }

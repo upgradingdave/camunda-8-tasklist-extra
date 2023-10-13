@@ -1,7 +1,6 @@
 package io.camunda.tasklist.annotations;
 
 import io.camunda.tasklist.TaskListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,4 +18,7 @@ public class TaskListenerRegistry {
     taskListeners.add(listener);
   }
 
+  public List<TaskListener> getTaskListeners() {
+    return taskListeners;
+  }
 }
