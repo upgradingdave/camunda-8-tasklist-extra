@@ -14,5 +14,13 @@ tasklist:
     contentType: "application/json"
     taskListBaseUrl: "https://REGION.tasklist.camunda.io/CLOUD_CLUSTER_ID"
     audience: "tasklist.camunda.io"
+operate:
+  client:
+    authorizationUrl: "https://login.cloud.camunda.io/oauth/token"
+    clientId: "CLOUD_CLIENT_ID"
+    clientSecret: "CLOUD_CLIENT_SECRET"
+    contentType: "application/x-www-form-urlencoded"
+    operateBaseUrl: "https://jfk-1.operate.camunda.io/bccd8692-5e2d-4599-b29e-0988bd5a14a4"
+    audience: "operate.camunda.io"
 server:
   port: 8087

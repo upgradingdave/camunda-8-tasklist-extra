@@ -3,21 +3,31 @@ import './app.scss'
 import CamundaForm from "./components/CamundaForm";
 import {Stomp} from '@stomp/stompjs';
 
+/* Set these params for your environment */
+// Your domain name where the java spring boot is listening
+const backendUrl = "localhost:8087"
+// Set this to http or https
+const backendProtocol = "http"
+// This is the process id used to search for user tasks
+const processId = "Process_twoUserTasks";
+// This is the bpmn file name. It should be <fileName>.bpmn (without the suffix)
+// This is used to find form schemas without having to query Tasklist rest api
+const processFileName = "TwoUserTasks";
+// How often do you want to poll for tasks?
+const pollingIntervalMillis = 500;
+/* END param section. You shouldn't need to change anything below this line */
+
 const welcomeFormSchema = require('./forms/welcome.form.json')
 
 // Websockets client
-const sockUrl = 'ws://localhost:8087/ws';
+const sockUrl = `ws://${backendUrl}/ws`;
 let stompClient = null;
 
 // Http Rest client
-const restApi = "http://localhost:8087";
+const restApi = `${backendProtocol}://${backendUrl}`;
 let rest = require('rest');
 let mime = require('rest/interceptor/mime');
 let client = rest.wrap(mime);
-
-const processId = "Process_twoUserTasks";
-const processFileName = "TwoUserTasks";
-const pollingIntervalMillis = 500;
 
 let merge = (a, b) => ({...a,...b});
 
@@ -137,7 +147,7 @@ class App extends Component {
 
   completeTask(taskId, variables) {
     return client({
-      path: `${restApi}/tasks/${taskId}/complete`,
+      path: `${restApi}/process/complete-job/${taskId}`,
       headers: {'Content-Type': 'application/json'},
       entity: variables
     })
@@ -196,7 +206,7 @@ class App extends Component {
       console.log("form submitted ...");
       console.log(data);
       this.setState({data: data, screen: "submitForm"});
-      this.completeTask(this.state.task.id, {}).then(() => {
+      this.completeTask(this.state.task.id, data).then(() => {
         if(this.state.screen !== "displayForm") {
           this.setState({screen: "searching"});
         }

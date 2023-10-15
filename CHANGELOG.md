@@ -2,9 +2,10 @@
 - [ ] Update version tag and test against 8.3.0
 
 # 8.2.15-SNAPSHOT (October 2023)
+- [ ] Add a cache to the js app to know whether to use web socket or rest api
 - [ ] Implement find task by variable
 - [ ] Able to register complete task listener
-- [ ] Update reactjs app to submit form via grpc (and not tasklist). The websocket is too fast!
+- [x] Update reactjs app to submit form via grpc (and not tasklist). The websocket is too fast!
 - [x] Sample Websocket listener
 - [x] Able to complete task and load next form
 - [x] Able to register create task listener

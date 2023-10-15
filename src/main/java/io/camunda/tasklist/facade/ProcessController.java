@@ -69,4 +69,9 @@ public class ProcessController {
 
     return operateRestClient.query(query);
   }
+
+  @PostMapping("/complete-job/{jobId}")
+  public void completeJob(@PathVariable String jobId, @RequestBody Map<String, Object> variables) {
+    zeebe.newCompleteCommand(Long.parseLong(jobId)).variables(variables).send();
+  }
 }
