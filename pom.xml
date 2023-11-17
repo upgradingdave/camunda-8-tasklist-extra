@@ -18,7 +18,7 @@
 
   <properties>
     <java.version>17</java.version>
-    <camunda.version>8.2.15</camunda.version>
+    <camunda.version>8.3.3</camunda.version>
     <spring-boot-starter-camunda.version>8.2.4</spring-boot-starter-camunda.version>
   </properties>
 
